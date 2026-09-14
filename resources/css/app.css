@@ -1,0 +1,14 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../../app/Livewire/**/*.php';
+
+@theme {
+    --font-sans: ui-sans-serif, system-ui, sans-serif;
+    --color-cream: #f7f1e8;
+    --color-ink: #1a1a1a;
+    --color-forest: #1f4d3a;
+    --color-terracotta: #c45c26;
+}
