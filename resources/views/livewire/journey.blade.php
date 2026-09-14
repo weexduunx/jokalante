@@ -6,9 +6,12 @@
 
     @if ($current)
         <ol class="mb-5 flex gap-2 text-xs font-medium">
-            <li class="flex-1 rounded px-2 py-1 {{ $current >= 1 ? 'bg-forest text-white' : 'bg-white text-ink/50' }}">1. {{ __('step.diagnostic') }}</li>
-            <li class="flex-1 rounded px-2 py-1 {{ $current >= 2 ? 'bg-forest text-white' : 'bg-white text-ink/50' }}">2. {{ __('step.content') }}</li>
-            <li class="flex-1 rounded px-2 py-1 {{ $current >= 3 ? 'bg-forest text-white' : 'bg-white text-ink/50' }}">3. {{ __('step.next') }}</li>
+            <li class="flex-1 rounded px-2 py-1 {{ $current >= 1 ? 'bg-forest text-white' : 'bg-white text-ink/50' }}">1.
+                {{ __('step.diagnostic') }}</li>
+            <li class="flex-1 rounded px-2 py-1 {{ $current >= 2 ? 'bg-forest text-white' : 'bg-white text-ink/50' }}">2.
+                {{ __('step.content') }}</li>
+            <li class="flex-1 rounded px-2 py-1 {{ $current >= 3 ? 'bg-forest text-white' : 'bg-white text-ink/50' }}">3.
+                {{ __('step.next') }}</li>
         </ol>
     @endif
 
@@ -17,18 +20,21 @@
         <p class="mt-3 text-ink/80">{{ __('welcome.lead') }}</p>
         <p class="mt-2 text-sm text-terracotta">{{ __('app.tagline') }}</p>
         <div class="mt-6 flex flex-col gap-3">
-            <button type="button" wire:click="start" class="rounded-lg bg-forest px-4 py-3 text-white">{{ __('welcome.cta') }}</button>
-            <button type="button" wire:click="openSms" class="rounded-lg border border-ink/20 bg-white px-4 py-3">{{ __('welcome.sms') }}</button>
+            <button type="button" wire:click="start"
+                class="rounded-lg bg-forest px-4 py-3 text-white">{{ __('welcome.cta') }}</button>
+            <button type="button" wire:click="openSms"
+                class="rounded-lg border border-ink/20 bg-white px-4 py-3">{{ __('welcome.sms') }}</button>
         </div>
     @endif
 
     @if ($screen === 'diagnostic')
         @php $q = $questions[$question]; @endphp
-        <p class="text-sm text-ink/60">{{ $question + 1 }} / 4</p>
+        <p class="text-sm text-ink/60">{{ $question + 1 }} / {{ count($questions) }}</p>
         <h2 class="mt-1 text-xl font-semibold">{{ $q['label'] }}</h2>
         <div class="mt-4 flex flex-col gap-2">
             @foreach ($q['options'] as $value => $label)
-                <button type="button" wire:click="answer('{{ $q['field'] }}', '{{ $value }}')" class="rounded-lg border border-ink/15 bg-white px-4 py-3 text-left hover:border-forest">
+                <button type="button" wire:click="answer('{{ $q['field'] }}', '{{ $value }}')"
+                    class="rounded-lg border border-ink/15 bg-white px-4 py-3 text-left hover:border-forest">
                     {{ $label }}
                 </button>
             @endforeach
@@ -42,20 +48,29 @@
         <p class="mt-2">{{ $competence->description() }}</p>
         <p class="mt-3 text-sm">{{ __('result.why', ['count' => $competence->demande_locale]) }}</p>
         <div class="mt-4 rounded-lg bg-white p-3 text-sm">
-            <p><span class="font-medium">{{ __('result.source') }} :</span> {{ $competence->justification_source }}</p>
+            <p><span class="font-medium">{{ __('result.source') }} :</span> {{ $competence->justification_source }}
+            </p>
             <p class="mt-1">{{ __('result.updated') }} {{ $competence->source_updated_on->format('d/m/Y') }}</p>
             @if ($competence->sourceIsStale())
-                <p class="mt-2 inline-block rounded bg-terracotta/15 px-2 py-1 text-terracotta">{{ __('badge.verify') }}</p>
+                <p class="mt-2 inline-block rounded bg-terracotta/15 px-2 py-1 text-terracotta">
+                    {{ __('badge.verify') }}</p>
             @else
                 <p class="mt-2 inline-block rounded bg-forest/10 px-2 py-1 text-forest">{{ __('badge.ok') }}</p>
             @endif
         </div>
-        <button type="button" wire:click="openContent" class="mt-5 w-full rounded-lg bg-forest px-4 py-3 text-white">{{ __('next') }}</button>
+        <details class="mt-4 rounded-lg border border-ink/10 bg-white p-3 text-sm">
+            <summary class="cursor-pointer font-medium">{{ __('result.why_details') }}</summary>
+            <p class="mt-2">{{ __('result.criteria') }} : {{ __('q.age') }}, {{ __('q.education') }},
+                {{ __('q.goal') }}, {{ __('q.zone') }}, {{ __('q.interet') }}, {{ __('q.experience') }}.</p>
+            <p class="mt-2 text-ink/60">{{ __('result.limit') }}</p>
+        </details>
+        <button type="button" wire:click="openContent"
+            class="mt-5 w-full rounded-lg bg-forest px-4 py-3 text-white">{{ __('next') }}</button>
         <button type="button" wire:click="back" class="mt-3 text-sm underline">{{ __('back') }}</button>
     @endif
 
     @if ($screen === 'content' && $competence && $contenu)
-        <p class="text-sm">{{ __('content.level') }} : {{ __('niveau.'.$competence->niveau) }}</p>
+        <p class="text-sm">{{ __('content.level') }} : {{ __('niveau.' . $competence->niveau) }}</p>
         <h2 class="mt-1 text-xl font-semibold">{{ $competence->nom() }}</h2>
         <p class="mt-2 text-sm text-ink/70">{{ __('content.not_a_course') }}</p>
         @if ($contenu->signale_obsolete)
@@ -63,13 +78,11 @@
         @endif
         <div class="mt-4 whitespace-pre-line rounded-lg bg-white p-4 leading-relaxed">{{ $contenu->corps() }}</div>
         <p class="mt-2 text-xs text-ink/50">{{ $contenu->source }} · {{ $contenu->updated_at->format('d/m/Y') }}</p>
-        <button
-            type="button"
-            class="mt-4 rounded-lg border border-forest px-4 py-2 text-forest"
+        <button type="button" class="mt-4 rounded-lg border border-forest px-4 py-2 text-forest"
             data-audio="{{ e($contenu->scriptAudio()) }}"
-            onclick="window.jokalanteSpeak(this)"
-        >{{ __('listen') }}</button>
-        <button type="button" wire:click="openNext" class="mt-4 w-full rounded-lg bg-forest px-4 py-3 text-white">{{ __('next') }}</button>
+            onclick="window.jokalanteSpeak(this)">{{ __('listen') }}</button>
+        <button type="button" wire:click="openNext"
+            class="mt-4 w-full rounded-lg bg-forest px-4 py-3 text-white">{{ __('next') }}</button>
         <button type="button" wire:click="back" class="mt-3 text-sm underline">{{ __('back') }}</button>
     @endif
 
@@ -96,29 +109,55 @@
             <div>
                 <dt class="font-medium">{{ __('result.source') }}</dt>
                 <dd>{{ $opportunite->source }} — {{ $opportunite->source_updated_on->format('d/m/Y') }}</dd>
+                <dd class="mt-1 font-medium">{{ __('result.status') }} : {{ $opportunite->statutLabel() }}</dd>
+                @if ($opportunite->source_url)
+                    <dd class="mt-1"><a href="{{ $opportunite->source_url }}" target="_blank" rel="noreferrer"
+                            class="underline">{{ __('result.original_source') }}</a></dd>
+                @endif
             </div>
             @if ($opportunite->sourceIsStale())
                 <p class="rounded bg-terracotta/15 px-2 py-1 text-terracotta">{{ __('badge.verify') }}</p>
             @endif
         </dl>
-        <button type="button" wire:click="openSms" class="mt-4 w-full rounded-lg border border-ink/20 bg-white px-4 py-3">{{ __('welcome.sms') }}</button>
-        <button type="button" wire:click="restart" class="mt-3 w-full text-sm underline">{{ __('next.restart') }}</button>
+        @if ($reportSent)
+            <p class="mt-4 rounded bg-forest/10 px-3 py-2 text-sm text-forest">{{ __('report.sent') }}</p>
+        @else
+            <form wire:submit="reportOpportunity" class="mt-4 rounded-lg border border-ink/10 bg-white p-3">
+                <label class="text-sm font-medium" for="reportReason">{{ __('report.title') }}</label>
+                <select id="reportReason" wire:model="reportReason"
+                    class="mt-2 w-full rounded border border-ink/20 px-3 py-2" required>
+                    <option value="">{{ __('report.choose') }}</option>
+                    <option value="expiree">{{ __('report.expired') }}</option>
+                    <option value="contact_incorrect">{{ __('report.contact') }}</option>
+                    <option value="conditions_incorrectes">{{ __('report.conditions') }}</option>
+                    <option value="suspecte">{{ __('report.suspicious') }}</option>
+                </select>
+                <button type="submit" class="mt-3 text-sm underline">{{ __('report.submit') }}</button>
+            </form>
+        @endif
+        <button type="button" wire:click="openSms"
+            class="mt-4 w-full rounded-lg border border-ink/20 bg-white px-4 py-3">{{ __('welcome.sms') }}</button>
+        <button type="button" wire:click="restart"
+            class="mt-3 w-full text-sm underline">{{ __('next.restart') }}</button>
     @endif
 
     @if ($screen === 'sms')
         <h2 class="text-xl font-semibold">{{ __('sms.title') }}</h2>
         <p class="mt-2 text-sm text-ink/80">{{ __('sms.lead') }}</p>
-        <div class="mx-auto mt-5 max-w-xs rounded-[2rem] border-8 border-ink bg-ink p-3">
+        <div class="mx-auto mt-5 max-w-xs rounded-4xl border-8 border-ink bg-ink p-3">
             <div class="rounded-2xl bg-[#e5ffd8] p-3 text-sm text-ink">
                 <p class="text-xs font-semibold text-forest">{{ __('sms.from') }}</p>
                 @if ($competence && $opportunite)
-                    <p class="mt-2">Jokalante: {{ $competence->nom() }}. {{ $opportunite->titre() }}. {{ $opportunite->lieu }}. {{ $opportunite->contact }}. {{ $opportunite->delai() }}</p>
+                    <p class="mt-2">Jokalante: {{ $competence->nom() }}. {{ $opportunite->titre() }}.
+                        {{ $opportunite->lieu }}. {{ $opportunite->contact }}. {{ $opportunite->delai() }}</p>
                 @else
-                    <p class="mt-2">Jokalante: Envoie DIAG au 2121 — 4 questions, 1 compétence, 1 lieu. Aucun nom demandé.</p>
+                    <p class="mt-2">Jokalante: Envoie DIAG au 2121 — 4 questions, 1 compétence, 1 lieu. Aucun nom
+                        demandé.</p>
                 @endif
             </div>
         </div>
-        <button type="button" wire:click="start" class="mt-5 w-full rounded-lg bg-forest px-4 py-3 text-white">{{ __('welcome.cta') }}</button>
+        <button type="button" wire:click="start"
+            class="mt-5 w-full rounded-lg bg-forest px-4 py-3 text-white">{{ __('welcome.cta') }}</button>
         <button type="button" wire:click="back" class="mt-3 text-sm underline">{{ __('back') }}</button>
     @endif
 </div>

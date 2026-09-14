@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Competence;
 use App\Models\Diagnostic;
 use App\Models\Learner;
+use App\Models\Report;
 use App\Services\DiagnosticEngine;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
@@ -19,6 +20,14 @@ class Journey extends Component
 
     public string $zone = '';
 
+    public string $age = '';
+
+    public string $niveauEtude = '';
+
+    public string $objectif = '';
+
+    public string $experience = '';
+
     public string $connectivite = '';
 
     public string $interet = '';
@@ -28,6 +37,10 @@ class Journey extends Component
     public ?int $competenceId = null;
 
     public bool $showSms = false;
+
+    public string $reportReason = '';
+
+    public bool $reportSent = false;
 
     public function mount(): void
     {
@@ -95,9 +108,33 @@ class Journey extends Component
         $this->screen = 'next';
     }
 
+    public function reportOpportunity(): void
+    {
+        $this->validate(['reportReason' => 'required|string|max:80']);
+
+        $competence = $this->competenceId
+            ? Competence::query()->with('opportunites')->find($this->competenceId)
+            : null;
+
+        $opportunite = $competence?->opportunites->first();
+
+        if ($opportunite) {
+            Report::query()->create([
+                'opportunite_id' => $opportunite->id,
+                'motif' => $this->reportReason,
+            ]);
+        }
+
+        $this->reportSent = true;
+    }
+
     public function openSms(): void
     {
         if (! $this->competenceId) {
+            $this->age = $this->age ?: '21-25';
+            $this->niveauEtude = $this->niveauEtude ?: 'bac';
+            $this->objectif = $this->objectif ?: 'emploi';
+            $this->experience = $this->experience ?: 'debutant';
             $this->zone = $this->zone ?: 'pikine';
             $this->connectivite = $this->connectivite ?: '2g';
             $this->interet = $this->interet ?: 'commerce';
@@ -111,7 +148,7 @@ class Journey extends Component
 
     public function restart(): void
     {
-        $this->reset(['zone', 'connectivite', 'interet', 'temps', 'competenceId', 'question']);
+        $this->reset(['zone', 'age', 'niveauEtude', 'objectif', 'experience', 'connectivite', 'interet', 'temps', 'competenceId', 'question', 'reportReason', 'reportSent']);
         $this->screen = 'welcome';
         $this->showSms = false;
     }
@@ -136,6 +173,35 @@ class Journey extends Component
     private function questions(): array
     {
         return [
+            [
+                'field' => 'age',
+                'label' => __('q.age'),
+                'options' => [
+                    '16-20' => __('q.age.16-20'),
+                    '21-25' => __('q.age.21-25'),
+                    '26-35' => __('q.age.26-35'),
+                    '36-plus' => __('q.age.36-plus'),
+                ],
+            ],
+            [
+                'field' => 'niveauEtude',
+                'label' => __('q.education'),
+                'options' => [
+                    'sans-diplome' => __('q.education.sans-diplome'),
+                    'bfem' => __('q.education.bfem'),
+                    'bac' => __('q.education.bac'),
+                    'superieur' => __('q.education.superieur'),
+                ],
+            ],
+            [
+                'field' => 'objectif',
+                'label' => __('q.goal'),
+                'options' => [
+                    'emploi' => __('q.goal.emploi'),
+                    'activite' => __('q.goal.activite'),
+                    'formation' => __('q.goal.formation'),
+                ],
+            ],
             [
                 'field' => 'zone',
                 'label' => __('q.zone'),
@@ -174,6 +240,15 @@ class Journey extends Component
                     'plein-temps' => __('q.temps.plein-temps'),
                 ],
             ],
+            [
+                'field' => 'experience',
+                'label' => __('q.experience'),
+                'options' => [
+                    'debutant' => __('q.experience.debutant'),
+                    'quelques-bases' => __('q.experience.quelques-bases'),
+                    'autonome' => __('q.experience.autonome'),
+                ],
+            ],
         ];
     }
 
@@ -181,6 +256,10 @@ class Journey extends Component
     {
         $competence = app(DiagnosticEngine::class)->recommend([
             'zone' => $this->zone,
+            'age' => $this->age,
+            'niveau_etude' => $this->niveauEtude,
+            'objectif' => $this->objectif,
+            'experience' => $this->experience,
             'connectivite' => $this->connectivite,
             'interet' => $this->interet,
             'temps' => $this->temps,
@@ -189,13 +268,23 @@ class Journey extends Component
         $this->competenceId = $competence->id;
 
         $learner = $this->ensureLearner();
-        $learner->update(['zone_geo' => $this->zone]);
+        $learner->update([
+            'zone_geo' => $this->zone,
+            'tranche_age' => $this->age,
+            'niveau_etude' => $this->niveauEtude,
+            'objectif' => $this->objectif,
+            'niveau_experience' => $this->experience,
+        ]);
 
         Diagnostic::query()->create([
             'learner_id' => $learner->id,
             'session_token' => session()->getId(),
             'reponses' => [
                 'zone' => $this->zone,
+                'age' => $this->age,
+                'niveau_etude' => $this->niveauEtude,
+                'objectif' => $this->objectif,
+                'experience' => $this->experience,
                 'connectivite' => $this->connectivite,
                 'interet' => $this->interet,
                 'temps' => $this->temps,

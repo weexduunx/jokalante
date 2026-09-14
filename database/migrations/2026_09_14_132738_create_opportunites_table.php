@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('delai_fr');
             $table->string('delai_wo');
             $table->string('source');
+            $table->string('source_url')->nullable();
             $table->date('source_updated_on');
+            $table->string('statut', 20)->default('a_verifier');
             $table->string('zone_geo')->default('dakar-pikine');
             $table->boolean('ajoutee_par_formateur')->default(false);
             $table->timestamps();

@@ -13,6 +13,10 @@ return new class extends Migration
             $table->uuid('anonymous_id')->unique();
             $table->string('langue_preferee', 8)->default('fr');
             $table->string('zone_geo')->nullable();
+            $table->string('tranche_age')->nullable();
+            $table->string('niveau_etude')->nullable();
+            $table->string('objectif')->nullable();
+            $table->string('niveau_experience')->nullable();
             $table->timestamps();
         });
     }

@@ -18,7 +18,9 @@ class Opportunite extends Model
         'delai_fr',
         'delai_wo',
         'source',
+        'source_url',
         'source_updated_on',
+        'statut',
         'zone_geo',
         'ajoutee_par_formateur',
     ];
@@ -54,5 +56,14 @@ class Opportunite extends Model
     public function sourceIsStale(): bool
     {
         return $this->source_updated_on->lt(now()->subDays(90));
+    }
+
+    public function statutLabel(): string
+    {
+        if ($this->sourceIsStale()) {
+            return __('badge.expired');
+        }
+
+        return $this->statut === 'expiree' ? __('badge.expired') : __('badge.verified');
     }
 }

@@ -7,7 +7,7 @@ use App\Models\Competence;
 class DiagnosticEngine
 {
     /**
-     * @param  array{zone:string,connectivite:string,interet:string,temps:string}  $answers
+     * @param  array<string, string>  $answers
      */
     public function recommend(array $answers): Competence
     {

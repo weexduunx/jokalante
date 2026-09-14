@@ -12,6 +12,10 @@ class Learner extends Model
         'anonymous_id',
         'langue_preferee',
         'zone_geo',
+        'tranche_age',
+        'niveau_etude',
+        'objectif',
+        'niveau_experience',
     ];
 
     protected static function booted(): void
