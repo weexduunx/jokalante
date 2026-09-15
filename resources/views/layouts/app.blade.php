@@ -10,8 +10,8 @@
 </head>
 
 <body class="min-h-screen text-ink antialiased">
-    <header class="border-b border-ink/10 bg-cream/80 backdrop-blur">
-        <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+    <header class="border-b border-ink/10 bg-cream/80 sticky top-0 z-50 backdrop-blur">
+        <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 ">
             <a href="{{ route('home') }}" class="flex items-center gap-3">
                 <span
                     class="flex h-10 w-10 items-center justify-center rounded-xl bg-forest text-lg font-black text-white shadow-lg shadow-forest/15">J</span>

@@ -24,10 +24,7 @@
     @if ($screen === 'welcome')
         <div class="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
             <section class="max-w-2xl">
-                <div
-                    class="mb-5 inline-flex items-center gap-2 rounded-full border border-forest/20 bg-mint/70 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-forest">
-                    <span class="h-2 w-2 rounded-full bg-terracotta"></span> Information vérifiée · action locale
-                </div>
+               
                 <h1 class="display-title max-w-xl text-4xl leading-[0.98] text-forest sm:text-6xl">
                     {{ __('welcome.title') }}</h1>
                 <p class="mt-6 max-w-xl text-lg leading-relaxed text-ink/75">{{ __('welcome.lead') }}</p>

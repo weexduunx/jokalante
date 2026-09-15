@@ -1,97 +1,97 @@
 # Jokalante
 
-**« Créer une connexion » — en wolof.**
+**“Creating a connection” — in Wolof.**
 
-Jokalante — Créer la connexion entre savoir et opportunité.
+Jokalante — Creating the connection between knowledge and opportunity.
 Jokalante — Connecting people to trusted knowledge and opportunities.
 
-Proof of Concept réalisé dans le cadre du **Hackathon OSF — *Information You Can Trust***
-Track principal : **Éducation & Adéquation Emploi**
-Tracks complémentaires : *Transparency & Accountability* / *Safety, Reporting & Protection*
+Proof of Concept developed as part of the **OSF Hackathon — *Information You Can Trust***
+Main track: **Education & Employment Alignment**
+Additional tracks: *Transparency & Accountability* / *Safety, Reporting & Protection*
 
 ---
 
-## 📖 Sommaire
+## 📖 Table of Contents
 
-- [Le problème](#-le-problème)
-- [Ce que fait Jokalante](#-ce-que-fait-jokalante)
-- [Public cible](#-public-cible)
-- [Principe fonctionnel](#-principe-fonctionnel)
-- [Stack technique](#-stack-technique)
-- [Architecture applicative](#-architecture-applicative)
-- [Modèle de données](#-modèle-de-données)
-- [Rôle et garde-fous de l'IA](#-rôle-et-garde-fous-de-lia)
-- [Fonctionnalités du MVP](#-fonctionnalités-du-mvp)
-- [Périmètre du hackathon (48h)](#-périmètre-du-hackathon-48h)
+- [The problem](#-the-problem)
+- [What Jokalante does](#-what-jokalante-does)
+- [Target audience](#-target-audience)
+- [Functional principle](#-functional-principle)
+- [Technology stack](#-technology-stack)
+- [Application architecture](#-application-architecture)
+- [Data model](#-data-model)
+- [Role and safeguards of AI](#-role-and-safeguards-of-ai)
+- [MVP features](#-mvp-features)
+- [Hackathon scope (48 hours)](#-hackathon-scope-48-hours)
 - [Installation](#-installation)
 - [Configuration](#-configuration)
-- [Indicateurs de succès](#-indicateurs-de-succès)
-- [Limites du projet](#-limites-du-projet)
+- [Success indicators](#-success-indicators)
+- [Project limitations](#-project-limitations)
 - [Roadmap](#-roadmap)
 
 ---
 
-## 🎯 Le problème
+## 🎯 The problem
 
-Dans de nombreux contextes africains, les jeunes ont un accès croissant à Internet, mais l'abondance d'information ne veut pas dire un meilleur accès aux opportunités. Les informations sur les formations, compétences, programmes et opportunités sont dispersées, difficiles à comparer, à vérifier ou déjà obsolètes.
+In many African contexts, young people have growing access to the Internet, but an abundance of information does not necessarily mean better access to opportunities. Information about training, skills, programmes and opportunities is scattered, difficult to compare, difficult to verify or already outdated.
 
-> **« Quelle information puis-je réellement croire et quelle action dois-je entreprendre ensuite ? »**
+> **“Which information can I actually trust, and what action should I take next?”**
 
-Le problème n'est donc pas le manque d'information, mais **le manque d'information fiable, contextualisée et actionnable**.
+The problem is therefore not a lack of information, but **a lack of reliable, contextualized and actionable information**.
 
-## 💡 Ce que fait Jokalante
+## 💡 What Jokalante does
 
-Jokalante permet à un utilisateur de passer **d'une information dispersée à une décision éclairée, puis à une action concrète**, en répondant à cinq questions :
+Jokalante helps users move **from scattered information to an informed decision, and then to concrete action**, by answering five questions:
 
-1. Que devrais-je apprendre ?
-2. Pourquoi cette compétence est-elle pertinente pour moi ?
-3. Où puis-je l'apprendre ou la valider ?
-4. Quelle opportunité ou quelle action puis-je entreprendre ensuite ?
-5. Pourquoi puis-je faire confiance à cette recommandation ?
+1. What should I learn?
+2. Why is this skill relevant to me?
+3. Where can I learn or validate it?
+4. What opportunity or action can I pursue next?
+5. Why should I trust this recommendation?
 
-Jokalante n'est **ni un chatbot, ni un moteur de recherche, ni une plateforme de cours**. C'est une plateforme de confiance qui utilise l'IA pour transformer des informations vérifiées en parcours personnalisés et en actions concrètes.
+Jokalante is **neither a chatbot, nor a search engine, nor a learning platform**. It is a trust platform that uses AI to transform verified information into personalized journeys and concrete actions.
 
-## 👥 Public cible
+## 👥 Target audience
 
-| Persona | Profil | Besoin |
+| Persona | Profile | Need |
 |---|---|---|
-| **Moussa** (principal) | 23 ans, Pikine, jeune diplômé/déscolarisé, smartphone Android d'entrée de gamme, connexion intermittente | Savoir quoi apprendre, où le faire et quelle opportunité est réellement accessible |
-| **Aïda** (secondaire) | 19 ans, étudiante avec peu d'accompagnement pédagogique | Apprendre une compétence simplement, à son niveau |
-| **Fatou** (tertiaire) | Formatrice / actrice locale | Diffuser des informations fiables et maintenir l'écosystème local à jour |
+| **Moussa** (primary) | 23, from Pikine, recent graduate or out of school, entry-level Android smartphone, intermittent connectivity | Know what to learn, where to learn it and which opportunity is actually accessible |
+| **Aïda** (secondary) | 19, student with limited access to educational support | Learn a skill in a simple way, at her own level |
+| **Fatou** (tertiary) | Trainer / local stakeholder | Share reliable information and help keep the local ecosystem up to date |
 
-## 🔁 Principe fonctionnel
+## 🔁 Functional principle
 
-Le parcours utilisateur repose sur huit étapes :
-
-```
-PROFIL → DIAGNOSTIC → INTELLIGENCE → PARCOURS → APPRENDRE → OPPORTUNITÉ → CONNEXION → SUIVI
-```
-
-L'IA (Groq) est le moteur d'interprétation, **jamais la source de vérité métier** : les compétences et opportunités affichées proviennent des données structurées et référencées dans Jokalante.
+The user journey is based on eight steps:
 
 ```
-SOURCE FIABLE → DONNÉE STRUCTURÉE → IA → EXPLICATION
+PROFILE → DIAGNOSIS → INTELLIGENCE → JOURNEY → LEARN → OPPORTUNITY → CONNECTION → FOLLOW-UP
 ```
 
-et non :
+AI (Groq) is the interpretation engine, **never the source of business truth**: the skills and opportunities displayed come from structured and referenced data within Jokalante.
 
 ```
-IA → Information supposée vraie
+RELIABLE SOURCE → STRUCTURED DATA → AI → EXPLANATION
 ```
 
-## 🛠 Stack technique
+and not:
 
-| Composant | Technologie |
+```
+AI → Assumed-to-be-true information
+```
+
+## 🛠 Technology stack
+
+| Component | Technology |
 |---|---|
 | Backend | **Laravel** |
 | Interface | **Livewire** + **Tailwind CSS** |
-| Base de données | **SQLite** (PoC) — migration possible vers MySQL / PostgreSQL |
-| Intelligence artificielle | **Groq API** (modèle `groq/compound`, avec outil `web_search` en complément du catalogue local) |
-| Déploiement | Environnement cloud simple compatible Laravel |
+| Database | **SQLite** (PoC) — can be migrated to MySQL / PostgreSQL |
+| Artificial intelligence | **Groq API** (`groq/compound` model, with the `web_search` tool as a complement to the local catalogue) |
+| Deployment | Simple Laravel-compatible cloud environment |
 
-L'IA est appelée derrière une abstraction Laravel (`AIServiceInterface`) afin de pouvoir changer de fournisseur sans modifier le parcours métier. La clé API Groq est conservée côté serveur et n'est jamais exposée au navigateur.
+AI is called through a Laravel abstraction (`AIServiceInterface`) so that the provider can be changed without modifying the business journey. The Groq API key is stored server-side and is never exposed to the browser.
 
-## 🏗 Architecture applicative
+## 🏗 Application architecture
 
 ```
 app/
@@ -119,7 +119,7 @@ app/
     └── TranslationService.php
 ```
 
-### Contrat d'intelligence artificielle
+### Artificial intelligence contract
 
 ```php
 interface AIServiceInterface
@@ -132,171 +132,171 @@ interface AIServiceInterface
 }
 ```
 
-`GroqAIService` implémente ce contrat et centralise l'authentification, les délais d'attente, la gestion des erreurs, la limitation du contexte et la validation de la réponse. L'analyse retourne une recommandation structurée (compétence, opportunités par identifiant, synthèse du profil, forces, lacunes, métiers compatibles, justification, prochaine action), que Jokalante filtre contre sa base avant affichage.
+`GroqAIService` implements this contract and centralizes authentication, timeouts, error handling, context limitation and response validation. The analysis returns a structured recommendation (skill, opportunities by ID, profile summary, strengths, gaps, compatible occupations, rationale and next action), which Jokalante filters against its database before displaying it.
 
-## 🗄 Modèle de données
+## 🗄 Data model
 
-| Table | Rôle |
+| Table | Purpose |
 |---|---|
-| `competencies` | Compétences du catalogue (nom, description, secteur, niveau) |
-| `path_steps` | Étapes d'un parcours pour une compétence |
-| `learning_contents` | Micro-contenus pédagogiques |
-| `opportunities` | Formations, stages, emplois, dispositifs — avec statut et date de vérification |
-| `sources` | Sources d'information (url, type, date de publication/vérification, statut) |
-| `user_profiles` | Profil anonyme (langue, zone, niveau, objectif, intérêts, expérience) |
-| `recommendations` | Compétence recommandée à un profil, raison, niveau de confiance |
-| `progress_records` | Progression d'un profil sur les étapes du parcours |
-| `saved_opportunities` | Opportunités sauvegardées par un profil |
-| `reports` | Signalements sur une opportunité |
+| `competencies` | Catalogue skills (name, description, sector, level) |
+| `path_steps` | Journey steps for a skill |
+| `learning_contents` | Micro-learning content |
+| `opportunities` | Training, internships, jobs and support programmes — with status and verification date |
+| `sources` | Information sources (URL, type, publication/verification date, status) |
+| `user_profiles` | Anonymous profile (language, location, level, goal, interests, experience) |
+| `recommendations` | Skill recommended to a profile, rationale and confidence level |
+| `progress_records` | A profile’s progress through journey steps |
+| `saved_opportunities` | Opportunities saved by a profile |
+| `reports` | Reports submitted about an opportunity |
 
-⚠️ Les champs `confidence` / `trust_score` ne doivent jamais être interprétés seuls : la réponse doit toujours conserver les critères et références qui les justifient.
+⚠️ The `confidence` / `trust_score` fields must never be interpreted on their own: the response must always retain the criteria and references that justify them.
 
-## 🤖 Rôle et garde-fous de l'IA
+## 🤖 Role and safeguards of AI
 
-L'IA (Groq) intervient sur six problèmes précis :
+AI (Groq) addresses six specific problems:
 
-1. **Analyse de profil** — profil → forces, objectif, niveau, lacunes
-2. **Matching** — profil → compétence
-3. **Explication** — données → explication personnalisée
-4. **Assistant contextualisé** — question → réponse fondée sur données vérifiées
-5. **Simplification** — information complexe → langage simple
-6. **Adaptation linguistique** — français ↔ wolof
+1. **Profile analysis** — profile → strengths, goal, level and gaps
+2. **Matching** — profile → skill
+3. **Explanation** — data → personalized explanation
+4. **Contextual assistant** — question → answer based on verified data
+5. **Simplification** — complex information → plain language
+6. **Language adaptation** — French ↔ Wolof
 
-**Règles de sécurité :**
+**Safety rules:**
 
-- L'IA ne crée jamais l'information de référence ; elle travaille sur des données structurées et référencées.
-- Une réponse refusée, incomplète ou sans référence exploitable est remplacée par un message indiquant que l'information n'est pas disponible.
-- Les résultats de recherche web sont limités à des URLs **HTTPS** et à **5 sources maximum** par analyse.
-- Une source trouvée sur le web est toujours affichée comme **« source proposée — à vérifier »**, jamais comme une information fiable tant qu'elle n'a pas été contrôlée (organisme, date, conditions, cohérence).
-- **Il ne faut jamais présenter une fausse opportunité comme réelle.**
+- AI never creates reference information; it works with structured and referenced data.
+- A refused, incomplete or unusable response without a workable reference is replaced with a message stating that the information is unavailable.
+- Web search results are limited to **HTTPS** URLs and a maximum of **five sources** per analysis.
+- A source found on the Web is always displayed as a **“suggested source — needs checking”**, never as reliable information until it has been reviewed for organization, date, eligibility requirements and consistency.
+- **A fictional opportunity must never be presented as real.**
 
-### Système de confiance
+### Trust system
 
-Chaque information affiche son statut :
+Each piece of information displays its status:
 
-- 🟢 **Vérifiée** — source identifiable et vérification récente
-- 🟡 **À vérifier** — information connue nécessitant une nouvelle vérification
-- 🔴 **Expirée** — date limite dépassée ou information obsolète
+- 🟢 **Verified** — identifiable source and recent verification
+- 🟡 **Needs checking** — known information requiring a new verification
+- 🔴 **Expired** — deadline passed or information outdated
 
-Un **Trust Score explicable** peut être affiché en synthèse, mais toujours accompagné des critères qui l'ont produit (source identifiable, date de publication, vérification récente, informations complètes, date limite renseignée, absence de signalement récent) — jamais comme une garantie.
+An **explainable Trust Score** may be displayed as a summary, but it must always be accompanied by the criteria that produced it (identifiable source, publication date, recent verification, complete information, stated deadline and absence of recent reports) — never presented as a guarantee.
 
-## ✨ Fonctionnalités du MVP
+## ✨ MVP features
 
-- **F01** — Choix de langue (Français / Wolof)
-- **F02** — Diagnostic rapide (< 2 min, sans compte, sans donnée sensible, 14 régions du Sénégal)
-- **F03** — Moteur de recommandation IA (catalogue enrichi dynamiquement par Groq, validé avant affichage)
-- **F04** — Explication de la recommandation (critères, données, interprétation IA, limites)
-- **F05** — Catalogue de compétences (5 à 8 compétences)
-- **F06** — Micro-learning (contenu de 3 à 5 minutes)
-- **F07** — Opportunités locales (formations, stages, emplois, dispositifs)
-- **F08** — Système de confiance (statuts + Trust Score explicable)
-- **F09** — Signalement d'information
-- **F10** — Prochaine action claire à chaque parcours
-- **F11** — Accessibilité (mobile-first, peu de JS, langage simple)
-- **F12** — Mode faible connectivité (pages légères, cache)
-- **F13** — Multilinguisme (séparation interface / contenu / données / traductions)
-- **F14** — Parcours personnalisé (3 à 5 étapes, progression anonyme)
-- **F15** — Assistant Jokalante propulsé par Groq (répond uniquement à partir de données vérifiées)
-- **F16** — Tableau de bord utilisateur (objectif, recommandations, progression, opportunités sauvegardées, prochaine action)
-- **F17** — Connexion aux opportunités (consulter, sauvegarder, contacter, signaler)
-- **F18** — Espaces partenaires *(évolution post-hackathon)*
+- **F01** — Language selection (French / Wolof)
+- **F02** — Quick diagnosis (< 2 min, no account, no sensitive data, 14 regions of Senegal)
+- **F03** — AI recommendation engine (catalogue dynamically enriched by Groq and validated before display)
+- **F04** — Recommendation explanation (criteria, data, AI interpretation and limitations)
+- **F05** — Skills catalogue (5 to 8 skills)
+- **F06** — Micro-learning (3-to-5-minute content)
+- **F07** — Local opportunities (training, internships, jobs and support programmes)
+- **F08** — Trust system (statuses + explainable Trust Score)
+- **F09** — Information reporting
+- **F10** — A clear next action at the end of every journey
+- **F11** — Accessibility (mobile-first, limited JavaScript, plain language)
+- **F12** — Low-connectivity mode (lightweight pages, caching)
+- **F13** — Multilingual support (separation of interface / content / data / translations)
+- **F14** — Personalized journey (3 to 5 steps, anonymous progress tracking)
+- **F15** — Jokalante assistant powered by Groq (answers only from verified data)
+- **F16** — User dashboard (goal, recommendations, progress, saved opportunities and next action)
+- **F17** — Opportunity connection (view, save, contact and report)
+- **F18** — Partner spaces *(post-hackathon evolution)*
 
-## 🚧 Périmètre du hackathon (48h)
+## 🚧 Hackathon scope (48 hours)
 
-**Zone pilote :** Dakar et sa périphérie (ou zone plus restreinte).
+**Pilot area:** Dakar and its surrounding area, or a more restricted zone.
 
-**Données du PoC :**
+**PoC data:**
 
-- 5–8 compétences
-- 5–10 opportunités
-- 3–5 sources identifiables
-- 2–3 micro-contenus
-- 2 langues (français, wolof)
+- 5–8 skills
+- 5–10 opportunities
+- 3–5 identifiable sources
+- 2–3 pieces of micro-learning content
+- 2 languages (French and Wolof)
 
-Les données non réellement vérifiées sont clairement identifiées comme **« Données de démonstration »**.
+Information that has not been genuinely verified is clearly labelled as **“Demonstration data”**.
 
-**Hors périmètre MVP :** plateforme LMS complète, certification Jokalante, marketplace, paiement, réseau social, recrutement automatisé, CV builder complet, scraping massif, USSD complet, couverture nationale, gestion multi-langues étendue, système administratif complexe, espace partenaire complet.
+**Outside the MVP scope:** a complete LMS, Jokalante certification, marketplace, payments, social network, automated recruitment, complete CV builder, mass scraping, full USSD service, nationwide coverage, extensive multilingual support, a complex administrative system and a complete partner space.
 
 ## ⚙️ Installation
 
 ```bash
-# Cloner le projet
-git clone <url-du-repo> jokalante
+# Clone the project
+git clone <repository-url> jokalante
 cd jokalante
 
-# Installer les dépendances PHP
+# Install PHP dependencies
 composer install
 
-# Installer les dépendances front
+# Install frontend dependencies
 npm install
 
-# Copier le fichier d'environnement
+# Copy the environment file
 cp .env.example .env
 php artisan key:generate
 
-# Configurer la base SQLite
+# Configure the SQLite database
 touch database/database.sqlite
 
-# Lancer les migrations et les seeders (catalogue de démonstration)
+# Run migrations and seeders (demonstration catalogue)
 php artisan migrate --seed
 
-# Compiler les assets
+# Build the assets
 npm run dev
 
-# Lancer le serveur
+# Start the server
 php artisan serve
 ```
 
 ## 🔐 Configuration
 
-Dans le fichier `.env` :
+In the `.env` file:
 
 ```env
 DB_CONNECTION=sqlite
-DB_DATABASE=/chemin/absolu/vers/database/database.sqlite
+DB_DATABASE=/absolute/path/to/database/database.sqlite
 
 GROQ_API_KEY=your-groq-api-key
 GROQ_MODEL=groq/compound
 ```
 
-La clé Groq n'est jamais exposée côté client : tous les appels transitent par `GroqAIService`, côté serveur.
+The Groq key is never exposed on the client side: all calls go through `GroqAIService` on the server side.
 
-## 📊 Indicateurs de succès
+## 📊 Success indicators
 
-| KPI | Cible |
+| KPI | Target |
 |---|---|
-| Rapidité | Parcours complet en moins de 3 minutes |
-| Compréhension | L'utilisateur sait répondre à « Que dois-je faire maintenant ? » |
-| Confiance | L'utilisateur identifie source + date + statut |
-| Accessibilité | Parcours utilisable avec une connexion fortement limitée |
-| Pertinence | L'utilisateur comprend pourquoi la compétence lui a été recommandée |
-| Transparence IA | Les données, sources et limites de la réponse de Groq sont identifiables |
-| Passage à l'action | La prochaine action est retrouvable depuis le tableau de bord |
+| Speed | Complete journey in less than 3 minutes |
+| Understanding | The user can answer “What should I do now?” |
+| Trust | The user can identify the source, date and status |
+| Accessibility | Journey usable with a highly limited connection |
+| Relevance | The user understands why the skill was recommended |
+| AI transparency | The data, sources and limitations of the Groq response are identifiable |
+| Taking action | The next action can be found again from the dashboard |
 
-## ⚠️ Limites du projet
+## ⚠️ Project limitations
 
-Jokalante **ne garantit pas** :
+Jokalante **does not guarantee**:
 
-- l'obtention d'un emploi ;
-- l'admission à une formation ;
-- l'exactitude permanente d'une information externe ;
-- la reconnaissance d'une certification.
+- obtaining a job;
+- admission to a training programme;
+- the permanent accuracy of external information;
+- recognition of a certification.
 
-Jokalante fournit une **information contextualisée, traçable, destinée à aider l'utilisateur à prendre une décision**.
+Jokalante provides **contextualized and traceable information intended to help users make a decision**.
 
 ## 🗺 Roadmap
 
-- **Phase 2 — Accessibilité** : SMS, USSD, PWA offline, davantage de langues locales
-- **Phase 3 — Écosystème** : centres de formation, ONG, associations, entreprises, institutions publiques
-- **Phase 4 — Intelligence** : analyse fine du marché, détection d'informations obsolètes, alertes, amélioration de l'assistant conversationnel
-- **Phase 5 — Extension** : autres villes et pays africains
+- **Phase 2 — Accessibility**: SMS, USSD, offline PWA and additional local languages
+- **Phase 3 — Ecosystem**: training centres, NGOs, associations, companies and public institutions
+- **Phase 4 — Intelligence**: deeper labour-market analysis, outdated-information detection, alerts and improvements to the conversational assistant
+- **Phase 5 — Expansion**: additional African cities and countries
 
 ---
 
 ## Pitch
 
-> Le problème n'est pas toujours que l'information n'existe pas. Le problème, c'est qu'elle est dispersée, difficile à vérifier et souvent difficile à transformer en action.
+> The problem is not always that information does not exist. The problem is that it is scattered, difficult to verify and often difficult to turn into action.
 >
-> Jokalante — qui signifie « créer une connexion » en wolof — connecte les jeunes au savoir, aux compétences et aux opportunités de leur environnement grâce à l'IA, avec une source, une date de vérification et un niveau de confiance affichés pour chaque information.
+> Jokalante — which means “creating a connection” in Wolof — connects young people to the knowledge, skills and opportunities around them through AI, while displaying a source, verification date and confidence status for every piece of information.
 >
-> **Jokalante : comprendre, vérifier, agir.**
+> **Jokalante: understand, verify, act.**
