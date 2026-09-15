@@ -57,4 +57,9 @@ class Competence extends Model
     {
         return $this->hasOne(Contenu::class)->latestOfMany();
     }
+
+    public function roadmapSteps(): HasMany
+    {
+        return $this->hasMany(RoadmapStep::class)->orderBy('position');
+    }
 }

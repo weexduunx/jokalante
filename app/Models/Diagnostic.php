@@ -12,12 +12,15 @@ class Diagnostic extends Model
         'session_token',
         'reponses',
         'competence_recommandee_id',
+        'opportunite_recommandee_id',
+        'analyse_ia',
     ];
 
     protected function casts(): array
     {
         return [
             'reponses' => 'array',
+            'analyse_ia' => 'array',
         ];
     }
 
@@ -29,5 +32,10 @@ class Diagnostic extends Model
     public function competence(): BelongsTo
     {
         return $this->belongsTo(Competence::class, 'competence_recommandee_id');
+    }
+
+    public function opportunite(): BelongsTo
+    {
+        return $this->belongsTo(Opportunite::class, 'opportunite_recommandee_id');
     }
 }

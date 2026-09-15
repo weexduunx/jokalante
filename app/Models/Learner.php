@@ -29,4 +29,14 @@ class Learner extends Model
     {
         return $this->hasMany(Diagnostic::class);
     }
+
+    public function progressRecords(): HasMany
+    {
+        return $this->hasMany(ProgressRecord::class);
+    }
+
+    public function savedOpportunities(): HasMany
+    {
+        return $this->hasMany(SavedOpportunity::class);
+    }
 }

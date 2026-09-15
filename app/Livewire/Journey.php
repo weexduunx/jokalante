@@ -6,6 +6,7 @@ use App\Models\Competence;
 use App\Models\Diagnostic;
 use App\Models\Learner;
 use App\Models\Report;
+use App\Services\AIServiceInterface;
 use App\Services\DiagnosticEngine;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
@@ -34,7 +35,15 @@ class Journey extends Component
 
     public string $temps = '';
 
+    /** @var list<array{slug:string,name:string,description:string,reason:string}> */
+    public array $suggestedCatalogue = [];
+
     public ?int $competenceId = null;
+
+    public ?int $opportuniteId = null;
+
+    /** @var array{profile_summary?:string, strengths?:list<string>, skills_to_develop?:list<string>, compatible_roles?:list<string>, reason?:string, next_action?:string, local_structures?:list<array{name:string,sector:string,region:string,url:string,evidence:string}>, web_sources?:list<array{title:string,url:string,publisher:string,published_at:?string,reason:string}>} */
+    public array $aiAnalysis = [];
 
     public bool $showSms = false;
 
@@ -57,13 +66,23 @@ class Journey extends Component
         $this->screen = 'diagnostic';
         $this->question = 0;
         $this->showSms = false;
+        $this->suggestedCatalogue = $this->fallbackCatalogue();
     }
 
     public function answer(string $field, string $value): void
     {
         $this->{$field} = $value;
 
-        if ($this->question < 3) {
+        if ($field === 'zone') {
+            // Keep the regional question immediate; Groq prepares the catalogue before the interest question.
+            $this->suggestedCatalogue = $this->fallbackCatalogue();
+        }
+
+        if ($field === 'connectivite') {
+            $this->suggestedCatalogue = $this->proposeCatalogue();
+        }
+
+        if ($this->question < count($this->questions()) - 1) {
             $this->question++;
 
             return;
@@ -116,7 +135,8 @@ class Journey extends Component
             ? Competence::query()->with('opportunites')->find($this->competenceId)
             : null;
 
-        $opportunite = $competence?->opportunites->first();
+        $opportunite = $competence?->opportunites->firstWhere('id', $this->opportuniteId)
+            ?? $competence?->opportunites->first();
 
         if ($opportunite) {
             Report::query()->create([
@@ -135,7 +155,7 @@ class Journey extends Component
             $this->niveauEtude = $this->niveauEtude ?: 'bac';
             $this->objectif = $this->objectif ?: 'emploi';
             $this->experience = $this->experience ?: 'debutant';
-            $this->zone = $this->zone ?: 'pikine';
+            $this->zone = $this->zone ?: 'dakar';
             $this->connectivite = $this->connectivite ?: '2g';
             $this->interet = $this->interet ?: 'commerce';
             $this->temps = $this->temps ?: 'soirs';
@@ -148,7 +168,7 @@ class Journey extends Component
 
     public function restart(): void
     {
-        $this->reset(['zone', 'age', 'niveauEtude', 'objectif', 'experience', 'connectivite', 'interet', 'temps', 'competenceId', 'question', 'reportReason', 'reportSent']);
+        $this->reset(['zone', 'age', 'niveauEtude', 'objectif', 'experience', 'connectivite', 'interet', 'temps', 'suggestedCatalogue', 'competenceId', 'opportuniteId', 'aiAnalysis', 'question', 'reportReason', 'reportSent']);
         $this->screen = 'welcome';
         $this->showSms = false;
     }
@@ -158,11 +178,14 @@ class Journey extends Component
         $competence = $this->competenceId
             ? Competence::query()->with(['contenus', 'opportunites'])->find($this->competenceId)
             : null;
+        $opportunite = $competence?->opportunites->firstWhere('id', $this->opportuniteId)
+            ?? $competence?->opportunites->first();
 
         return view('livewire.journey', [
             'competence' => $competence,
             'contenu' => $competence?->contenus->first(),
-            'opportunite' => $competence?->opportunites->first(),
+            'opportunite' => $opportunite,
+            'analysis' => $this->aiAnalysis,
             'questions' => $this->questions(),
         ]);
     }
@@ -205,12 +228,7 @@ class Journey extends Component
             [
                 'field' => 'zone',
                 'label' => __('q.zone'),
-                'options' => [
-                    'dakar' => __('q.zone.dakar'),
-                    'pikine' => __('q.zone.pikine'),
-                    'rufisque' => __('q.zone.rufisque'),
-                    'thies-rural' => __('q.zone.thies-rural'),
-                ],
+                'options' => $this->regionOptions(),
             ],
             [
                 'field' => 'connectivite',
@@ -224,12 +242,9 @@ class Journey extends Component
             [
                 'field' => 'interet',
                 'label' => __('q.interet'),
-                'options' => [
-                    'reparation' => __('q.interet.reparation'),
-                    'commerce' => __('q.interet.commerce'),
-                    'energie' => __('q.interet.energie'),
-                    'bureau' => __('q.interet.bureau'),
-                ],
+                'options' => collect($this->suggestedCatalogue ?: $this->fallbackCatalogue())
+                    ->mapWithKeys(fn (array $item): array => [$item['slug'] => $item['name']])
+                    ->all(),
             ],
             [
                 'field' => 'temps',
@@ -252,9 +267,64 @@ class Journey extends Component
         ];
     }
 
+    /** @return array<string, string> */
+    private function regionOptions(): array
+    {
+        return [
+            'dakar' => __('q.region.dakar'),
+            'diourbel' => __('q.region.diourbel'),
+            'fatick' => __('q.region.fatick'),
+            'kaffrine' => __('q.region.kaffrine'),
+            'kaolack' => __('q.region.kaolack'),
+            'kedougou' => __('q.region.kedougou'),
+            'kolda' => __('q.region.kolda'),
+            'louga' => __('q.region.louga'),
+            'matam' => __('q.region.matam'),
+            'saint-louis' => __('q.region.saint-louis'),
+            'sedhiou' => __('q.region.sedhiou'),
+            'tambacounda' => __('q.region.tambacounda'),
+            'thies' => __('q.region.thies'),
+            'ziguinchor' => __('q.region.ziguinchor'),
+        ];
+    }
+
+    /** @return list<array{slug:string,name:string,description:string,reason:string}> */
+    private function fallbackCatalogue(): array
+    {
+        return [
+            ['slug' => 'reparation', 'name' => __('q.interet.reparation'), 'description' => 'Diagnostiquer et remettre en état des équipements.', 'reason' => 'Piste pratique accessible aux débutants.'],
+            ['slug' => 'commerce', 'name' => __('q.interet.commerce'), 'description' => 'Présenter une offre, vendre et accompagner un client.', 'reason' => 'Piste compatible avec une activité locale.'],
+            ['slug' => 'energie', 'name' => __('q.interet.energie'), 'description' => 'Installer et entretenir des solutions énergétiques.', 'reason' => 'Piste utile dans plusieurs territoires.'],
+            ['slug' => 'bureau', 'name' => __('q.interet.bureau'), 'description' => 'Organiser des dossiers et traiter des informations.', 'reason' => 'Piste transversale pour l’emploi.'],
+        ];
+    }
+
+    /** @return list<array{slug:string,name:string,description:string,reason:string}> */
+    private function proposeCatalogue(): array
+    {
+        $competences = Competence::query()->get()->map(fn (Competence $competence): array => [
+            'slug' => $competence->slug,
+            'name' => $competence->nom_fr,
+            'description' => $competence->description_fr,
+            'level' => $competence->niveau,
+            'zone' => $competence->zone_geo,
+        ])->all();
+
+        $suggestions = app(AIServiceInterface::class)->proposeCatalogue([
+            'age' => $this->age,
+            'niveau_etude' => $this->niveauEtude,
+            'objectif' => $this->objectif,
+            'zone' => $this->zone,
+        ], $competences);
+
+        return $suggestions !== [] ? $suggestions : $this->fallbackCatalogue();
+    }
+
     private function finishDiagnostic(): void
     {
-        $competence = app(DiagnosticEngine::class)->recommend([
+        $this->suggestedCatalogue = $this->suggestedCatalogue ?: $this->proposeCatalogue();
+
+        $result = app(DiagnosticEngine::class)->analyze([
             'zone' => $this->zone,
             'age' => $this->age,
             'niveau_etude' => $this->niveauEtude,
@@ -263,9 +333,11 @@ class Journey extends Component
             'connectivite' => $this->connectivite,
             'interet' => $this->interet,
             'temps' => $this->temps,
-        ]);
+        ], $this->suggestedCatalogue);
 
-        $this->competenceId = $competence->id;
+        $this->competenceId = $result['competence']->id;
+        $this->opportuniteId = $result['opportunity_id'];
+        $this->aiAnalysis = $result['analysis'];
 
         $learner = $this->ensureLearner();
         $learner->update([
@@ -289,7 +361,9 @@ class Journey extends Component
                 'interet' => $this->interet,
                 'temps' => $this->temps,
             ],
-            'competence_recommandee_id' => $competence->id,
+            'competence_recommandee_id' => $result['competence']->id,
+            'opportunite_recommandee_id' => $result['opportunity_id'],
+            'analyse_ia' => $result['analysis'],
         ]);
 
         $this->screen = 'result';

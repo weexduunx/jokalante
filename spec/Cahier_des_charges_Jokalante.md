@@ -2,10 +2,10 @@
 
 **Projet :** Jokalante  
 **Signification :** « créer une connexion » en wolof  
-**Contexte :** Hackathon OSF — *Information You Can Trust*  
+**Contexte :** Hackathon OSF — _Information You Can Trust_
 **Track principal :** Éducation & Adéquation Emploi  
 **Tracks complémentaires :** Transparency & Accountability / Safety, Reporting & Protection  
-**Type de projet :** Proof of Concept — MVP de hackathon  
+**Type de projet :** Proof of Concept — MVP extensible de hackathon
 **Durée cible de développement :** 48 heures
 
 ---
@@ -85,12 +85,13 @@ Jokalante a pour objectif de permettre à un utilisateur de passer :
 
 > **d'une information dispersée à une décision éclairée, puis à une action concrète.**
 
-Le système doit répondre à quatre questions :
+Le système doit répondre à cinq questions :
 
 1. Que devrais-je apprendre ?
 2. Pourquoi cette compétence est-elle pertinente pour moi ?
 3. Où puis-je l'apprendre ou la valider ?
 4. Quelle opportunité ou quelle action puis-je entreprendre ensuite ?
+5. Pourquoi puis-je faire confiance à cette recommandation et à cette opportunité ?
 
 ---
 
@@ -109,7 +110,10 @@ Le MVP devra permettre de :
 9. signaler les informations potentiellement obsolètes ;
 10. fournir une prochaine action claire ;
 11. fonctionner sur des appareils mobiles modestes ;
-12. proposer au minimum deux langues pour la démonstration.
+12. proposer au minimum deux langues pour la démonstration ;
+13. construire un parcours personnalisé composé d'étapes progressives ;
+14. permettre à l'utilisateur de comprendre les critères utilisés par l'IA ;
+15. conserver les recommandations, la progression et la prochaine action dans un tableau de bord léger.
 
 ---
 
@@ -161,9 +165,13 @@ Formatrice ou actrice locale connaissant les besoins de son territoire.
 
 ---
 
-## 8. Principe fonctionnel central
+## 8. Positionnement et principe fonctionnel central
 
-Le parcours utilisateur repose sur quatre étapes :
+Jokalante n'est ni un simple chatbot, ni un moteur de recherche, ni une plateforme de cours complète. C'est une **plateforme de confiance qui utilise l'IA pour transformer des informations vérifiées en parcours personnalisés et en actions concrètes**.
+
+Grok est le moteur d'intelligence et d'interprétation. Il ne constitue jamais la source de vérité métier : les formations, compétences et opportunités affichées proviennent de données structurées et référencées dans Jokalante.
+
+Le parcours utilisateur repose sur huit étapes :
 
 ```text
 ┌─────────────┐
@@ -172,18 +180,39 @@ Le parcours utilisateur repose sur quatre étapes :
 └──────┬──────┘
        ↓
 ┌─────────────┐
-│ RECOMMANDER │
-│ Que choisir │
+│ DIAGNOSTIC  │
+│ Ce qui me manque │
 └──────┬──────┘
        ↓
 ┌─────────────┐
-│  APPRENDRE  │
-│ Microcontenu│
+│ INTELLIGENCE │
+│ Analyse + explication │
 └──────┬──────┘
        ↓
 ┌─────────────┐
-│    AGIR     │
-│ Opportunité │
+│  PARCOURS   │
+│ Étapes personnalisées │
+└──────┬──────┘
+       ↓
+┌─────────────┐
+│ APPRENDRE   │
+│ Micro-contenu + exercice │
+└──────┬──────┘
+       ↓
+┌─────────────┐
+│ OPPORTUNITÉ │
+│ Source + confiance │
+└──────┬──────┘
+       ↓
+┌─────────────┐
+│ CONNEXION   │
+│ Consulter / contacter │
+└──────┬──────┘
+       ↓
+┌─────────────┐
+│   SUIVI     │
+│ Progression + prochaine action │
+└──────┬──────┘
 └─────────────┘
 ```
 
@@ -196,10 +225,12 @@ Le parcours utilisateur repose sur quatre étapes :
 L'utilisateur sélectionne sa langue.
 
 **MVP :**
+
 - Français
 - Wolof
 
 **Évolution :**
+
 - Pulaar ;
 - Sérère ;
 - Diola ;
@@ -228,11 +259,15 @@ Informations recueillies :
 
 L'utilisateur peut utiliser Jokalante **sans créer de compte**.
 
+La zone géographique propose les **14 régions du Sénégal** afin d'éviter une recommandation limitée à Dakar. Après le choix de la région et de l'objectif, Groq propose un mini-catalogue de domaines et compétences à explorer, avec un nom, une description et une raison de pertinence.
+
 ---
 
 ### F03 — Moteur de recommandation IA
 
-À partir du profil, Jokalante identifie les compétences les plus pertinentes.
+À partir du profil et du mini-catalogue proposé par Groq, Jokalante identifie les compétences les plus pertinentes.
+
+Le catalogue proposé par Groq est une **proposition d'exploration**, pas une vérité métier. Une compétence déjà présente dans le catalogue vérifié peut conduire à une opportunité locale. Une nouvelle compétence doit être validée et documentée avant de pouvoir être associée à une opportunité présentée comme fiable.
 
 Exemple :
 
@@ -278,11 +313,20 @@ Jokalante affiche :
 
 Objectif : éviter une recommandation opaque.
 
+L'explication distingue toujours :
+
+- les données déclarées par l'utilisateur ;
+- les données vérifiées utilisées pour le matching ;
+- l'interprétation produite par l'IA ;
+- les limites ou incertitudes de la recommandation.
+
 ---
 
 ### F05 — Catalogue de compétences
 
 Le MVP contiendra environ **5 à 8 compétences**.
+
+Le catalogue peut être enrichi dynamiquement par Groq selon la région et l'objectif. Les propositions dynamiques sont affichées avec leur description et leur justification, puis comparées au catalogue Jokalante avant toute recommandation opérationnelle.
 
 Chaque compétence possède :
 
@@ -293,6 +337,16 @@ Chaque compétence possède :
 - compétences préalables ;
 - contenus associés ;
 - opportunités associées.
+
+Pour les compétences retenues dans le parcours, Jokalante peut également définir :
+
+- les compétences préalables ;
+- les étapes suivantes ;
+- une durée indicative ;
+- le niveau attendu ;
+- une ressource ou un micro-contenu associé.
+
+Le MVP présente un parcours de démonstration de **3 à 5 étapes**, sans chercher à remplacer une formation diplômante.
 
 ---
 
@@ -378,6 +432,19 @@ Statut
 ```
 
 L'utilisateur doit pouvoir accéder à la **source originale**.
+
+#### Trust Score explicable
+
+Une note de confiance peut être affichée à titre de synthèse, mais elle ne doit jamais être arbitraire ni présentée comme une garantie. Elle est calculée à partir de critères visibles :
+
+- source identifiable et, si possible, officielle ;
+- date de publication connue ;
+- vérification récente ;
+- informations complètes ;
+- date limite renseignée ;
+- absence de signalement récent.
+
+La fiche doit afficher les critères qui ont contribué au niveau obtenu. Le détail des critères prime sur le pourcentage.
 
 ---
 
@@ -490,6 +557,88 @@ L'IA peut aider à adapter les explications.
 
 ---
 
+### F14 — Parcours personnalisé
+
+À partir du profil, du diagnostic et des compétences disponibles, Jokalante propose un parcours lisible :
+
+```text
+Objectif : devenir développeur web
+       ↓
+HTML → CSS → JavaScript → PHP → Laravel
+       ↓
+Formation, certification ou opportunité
+```
+
+Chaque étape peut afficher :
+
+- objectif ;
+- durée estimée ;
+- niveau ;
+- prérequis ;
+- micro-contenu ;
+- exercice ou validation simple ;
+- état : à commencer, en cours ou terminé.
+
+**MVP :** un seul parcours personnalisé démontrable, alimenté par le catalogue local. La progression est enregistrée de manière anonyme lorsque l'utilisateur ne crée pas de compte.
+
+---
+
+### F15 — Assistant Jokalante avec Grok
+
+L'utilisateur peut poser une question en français ou en wolof. L'assistant répond uniquement à partir :
+
+- du profil et des préférences connus ;
+- des compétences, contenus et opportunités disponibles ;
+- des sources vérifiées associées à ces données.
+
+Chaque réponse doit renvoyer vers les éléments utilisés et proposer une action concrète. Si l'information n'est pas disponible ou n'est pas suffisamment vérifiée, l'assistant doit le dire explicitement et ne pas l'inventer.
+
+Le chat est une interface complémentaire : il ne remplace pas le parcours guidé, la fiche source ni les règles de confiance.
+
+---
+
+### F16 — Tableau de bord utilisateur
+
+Un tableau de bord léger regroupe :
+
+- l'objectif actuel ;
+- les compétences recommandées ;
+- la progression du parcours ;
+- les opportunités sauvegardées ;
+- la prochaine action ;
+- les informations récemment consultées.
+
+Le tableau de bord doit rester utilisable sans compte pour le MVP, avec une conservation locale ou une session anonyme lorsque cela est techniquement possible.
+
+---
+
+### F17 — Connexion aux opportunités
+
+Pour chaque opportunité, l'utilisateur peut :
+
+- consulter les conditions ;
+- ouvrir la source originale ;
+- sauvegarder l'opportunité ;
+- contacter l'organisme via le canal publié ;
+- signaler une information incorrecte.
+
+Jokalante ne promet ni admission ni emploi. Il facilite une mise en relation traçable.
+
+---
+
+### F18 — Espaces partenaires (évolution)
+
+Après le MVP, un espace formateur ou organisme pourra permettre de :
+
+- publier une formation ;
+- renseigner les prérequis, dates et zones ;
+- mettre à jour le statut ;
+- répondre aux signalements.
+
+Un espace partenaires pourra ensuite relier centres de formation, entreprises, ONG, associations et institutions publiques. Ces espaces ne sont pas requis pour la démonstration des 48 heures.
+
+---
+
 ## 10. Architecture fonctionnelle
 
 ```text
@@ -547,12 +696,19 @@ Migration possible vers :
 
 ### IA
 
-Une API LLM utilisée pour :
+**Grok** est le fournisseur IA retenu pour le PoC. Il est appelé derrière une abstraction Laravel afin de pouvoir changer de fournisseur sans modifier le parcours métier.
+
+L'API LLM est utilisée pour :
 
 - recommandation ;
 - explication ;
 - simplification ;
-- adaptation linguistique.
+- adaptation linguistique ;
+- analyse conversationnelle contextualisée.
+
+Le contexte transmis à Grok contient le profil, les compétences et les opportunités déjà connues par Jokalante. Le modèle `groq/compound` peut également utiliser l'outil `web_search` pour rechercher des formations, emplois, programmes ou bourses actuels lorsque le catalogue local est insuffisant.
+
+Une source trouvée sur Internet est toujours affichée comme **source proposée — à vérifier**. Elle ne devient pas une information fiable tant que Jokalante n'a pas contrôlé son URL HTTPS, son organisme, sa date, ses conditions et sa cohérence avec l'opportunité. Groq ne doit jamais inventer une source ou transformer une page web en garantie.
 
 ### Audio
 
@@ -586,10 +742,28 @@ app/
 │
 └── Services/
     ├── RecommendationService.php
-    ├── AIService.php
+       ├── AIServiceInterface.php
+       ├── GrokAIService.php
     ├── VerificationService.php
     └── TranslationService.php
 ```
+
+### Contrat d'intelligence artificielle
+
+```php
+interface AIServiceInterface
+{
+       public function analyzeProfile(
+              array $profile,
+              array $competences,
+              array $opportunities
+       ): array;
+}
+```
+
+`GrokAIService` implémente ce contrat et centralise l'authentification, les délais d'attente, la gestion des erreurs, la limitation du contexte et la validation de la réponse. La clé API est conservée dans la configuration d'environnement et n'est jamais exposée au navigateur.
+
+L'analyse retourne une recommandation structurée : compétence, opportunités sélectionnées par identifiant, synthèse du profil, forces, compétences à développer, métiers compatibles, justification et prochaine action. Jokalante filtre ensuite chaque identifiant contre sa base avant affichage.
 
 ---
 
@@ -603,6 +777,20 @@ name
 description
 sector
 level
+created_at
+updated_at
+```
+
+### `path_steps`
+
+```text
+id
+competency_id
+title
+description
+position
+estimated_minutes
+prerequisites
 created_at
 updated_at
 ```
@@ -676,6 +864,27 @@ confidence
 created_at
 ```
 
+### `progress_records`
+
+```text
+id
+profile_id
+path_step_id
+status
+completed_at
+created_at
+updated_at
+```
+
+### `saved_opportunities`
+
+```text
+id
+profile_id
+opportunity_id
+created_at
+```
+
 ### `reports`
 
 ```text
@@ -687,6 +896,8 @@ status
 created_at
 ```
 
+Les champs `confidence` ou `trust_score` ne doivent pas être interprétés seuls : la réponse doit conserver les critères et les références qui les justifient.
+
 ---
 
 ## 14. Rôle de l'intelligence artificielle
@@ -695,19 +906,27 @@ L'IA ne doit pas être utilisée simplement pour ajouter un chatbot.
 
 Elle doit résoudre des problèmes précis.
 
-### IA 1 — Matching
+### IA 1 — Analyse de profil
+
+**Profil → forces, objectif, niveau estimé et lacunes**
+
+### IA 2 — Matching
 
 **Profil → compétence**
 
-### IA 2 — Explication
+### IA 3 — Explication
 
 **Données → explication personnalisée**
 
-### IA 3 — Simplification
+### IA 4 — Assistant contextualisé
+
+**Question → réponse fondée sur les données vérifiées**
+
+### IA 5 — Simplification
 
 **Information complexe → langage simple**
 
-### IA 4 — Adaptation linguistique
+### IA 6 — Adaptation linguistique
 
 **Français → Wolof**
 
@@ -740,6 +959,22 @@ Information supposée vraie
 ```
 
 Cela permet de réduire les risques d'hallucination.
+
+Le flux attendu est :
+
+```text
+Profil utilisateur + données vérifiées
+                    ↓
+          Contexte contrôlé par Jokalante
+                    ↓
+                   Grok
+                    ↓
+      Réponse structurée + références + action
+                    ↓
+       Vérification des champs avant affichage
+```
+
+Une réponse refusée, incomplète ou sans référence exploitable doit être remplacée par une réponse prudente indiquant que l'information n'est pas disponible. Les résultats web sont limités à des URLs HTTPS et à cinq sources maximum par analyse.
 
 ---
 
@@ -824,15 +1059,17 @@ Jokalante analyse son profil.
 
 ### Étape 4
 
+Grok produit une analyse encadrée par les données du catalogue.
+
 Résultat :
 
 > **Compétence recommandée**
 
-avec une explication.
+avec une explication, les éléments utilisés et les limites éventuelles.
 
 ### Étape 5
 
-Il consulte :
+Moussa consulte son parcours personnalisé et commence :
 
 > **Micro-apprentissage**
 
@@ -842,17 +1079,21 @@ Jokalante affiche :
 
 > **Opportunité locale**
 
+avec son niveau de confiance, ses critères, sa source et sa date de vérification.
+
 ### Étape 7
 
 Moussa consulte :
 
-> **Source + date + statut de vérification**
+> **Source + date + statut + Trust Score explicable**
 
 ### Étape 8
 
 Jokalante lui donne :
 
-> **Sa prochaine action.**
+> **Sa prochaine action**, conservée dans son tableau de bord.
+
+Une question libre en français ou en wolof peut être posée à l'assistant Grok. La réponse renvoie vers les mêmes données vérifiées et ne crée pas de nouvelle opportunité.
 
 ---
 
@@ -884,6 +1125,14 @@ Parcours utilisable avec une connexion fortement limitée.
 
 Le testeur doit comprendre pourquoi la compétence lui a été recommandée.
 
+### KPI 6 — Transparence IA
+
+Le testeur doit pouvoir identifier les données utilisées, les sources citées et les limites de la réponse de Grok.
+
+### KPI 7 — Passage à l'action
+
+Le testeur doit pouvoir retrouver sa prochaine action depuis le tableau de bord.
+
 ---
 
 ## 21. Critères d'acceptation MVP
@@ -895,11 +1144,20 @@ Le MVP sera considéré comme fonctionnel lorsque :
 - [ ] il peut compléter un diagnostic ;
 - [ ] le système produit une recommandation ;
 - [ ] la recommandation est expliquée ;
+- [ ] les critères utilisés par l'IA et les limites de la recommandation sont visibles ;
+- [ ] un parcours personnalisé de 3 à 5 étapes est affiché ;
+- [ ] la progression d'une étape peut être enregistrée ;
 - [ ] un micro-contenu est accessible ;
 - [ ] une opportunité locale est affichée ;
 - [ ] la source est visible ;
 - [ ] la date de vérification est visible ;
 - [ ] le statut de confiance est visible ;
+- [ ] le Trust Score, lorsqu'il est affiché, présente ses critères ;
+- [ ] l'assistant Grok répond à partir d'un contexte vérifié ou indique que l'information est indisponible ;
+- [ ] Groq peut proposer des sources web HTTPS lorsque le catalogue local est insuffisant ;
+- [ ] les sources web proposées sont clairement marquées comme « à vérifier » ;
+- [ ] une opportunité peut être sauvegardée ;
+- [ ] le tableau de bord affiche la progression et la prochaine action ;
 - [ ] une action suivante est proposée ;
 - [ ] une information peut être signalée ;
 - [ ] l'interface fonctionne correctement sur mobile.
@@ -921,7 +1179,8 @@ Le MVP sera considéré comme fonctionnel lorsque :
 - USSD complet ;
 - couverture de tout le Sénégal ;
 - dizaines de langues ;
-- système administratif complexe.
+- système administratif complexe ;
+- espace partenaire complet avec gestion des comptes et modération avancée.
 
 ---
 
@@ -947,7 +1206,8 @@ Le MVP sera considéré comme fonctionnel lorsque :
 - analyse plus fine du marché ;
 - recommandations personnalisées ;
 - détection des informations obsolètes ;
-- alertes sur les nouvelles opportunités.
+- alertes sur les nouvelles opportunités ;
+- amélioration de l'assistant conversationnel et de l'adaptation en langues locales.
 
 ### Phase 5 — Extension
 
@@ -957,16 +1217,19 @@ Extension à d'autres villes et pays africains.
 
 ## 24. Risques
 
-| Risque | Impact | Réponse |
-|---|---|---|
-| Données obsolètes | 🔴 Élevé | Source + date + statut |
-| Hallucination IA | 🔴 Élevé | IA limitée à des données référencées |
-| Données insuffisantes | 🟠 Moyen | Zone pilote |
-| Trop de fonctionnalités | 🔴 Élevé | MVP strict |
-| Mauvaise traduction | 🟠 Moyen | Validation humaine |
-| Connexion faible | 🟠 Moyen | Interface légère |
-| Faux sentiment de garantie d'emploi | 🔴 Élevé | Positionnement clair |
-| Complexité USSD | 🟠 Moyen | Roadmap |
+| Risque                              | Impact   | Réponse                              |
+| ----------------------------------- | -------- | ------------------------------------ |
+| Données obsolètes                   | 🔴 Élevé | Source + date + statut               |
+| Hallucination IA                    | 🔴 Élevé | IA limitée à des données référencées |
+| Données insuffisantes               | 🟠 Moyen | Zone pilote                          |
+| Trop de fonctionnalités             | 🔴 Élevé | MVP strict                           |
+| Mauvaise traduction                 | 🟠 Moyen | Validation humaine                   |
+| Connexion faible                    | 🟠 Moyen | Interface légère                     |
+| Faux sentiment de garantie d'emploi | 🔴 Élevé | Positionnement clair                 |
+| Dépendance à l'API Grok             | 🟠 Moyen | Abstraction + réponse de repli       |
+| Réponse IA sans preuve suffisante   | 🔴 Élevé | Contexte vérifié + validation        |
+| Score de confiance mal compris      | 🟠 Moyen | Critères affichés, pas de garantie   |
+| Complexité USSD                     | 🟠 Moyen | Roadmap                              |
 
 ---
 

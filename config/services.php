@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'groq' => [
+        'api_key' => env('GROQ_API_KEY'),
+        'endpoint' => env('GROQ_API_ENDPOINT', 'https://api.groq.com/openai/v1/chat/completions'),
+        'model' => env('GROQ_MODEL', 'groq/compound'),
+        'web_search' => env('GROQ_WEB_SEARCH', true),
+        'timeout' => env('GROQ_TIMEOUT', 15),
+    ],
+
 ];

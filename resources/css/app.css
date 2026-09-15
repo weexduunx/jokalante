@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -6,9 +6,78 @@
 @source '../../app/Livewire/**/*.php';
 
 @theme {
-    --font-sans: ui-sans-serif, system-ui, sans-serif;
+    --font-sans: "Avenir Next", "Trebuchet MS", sans-serif;
+    --font-display: "Arial Black", "Avenir Next", sans-serif;
     --color-cream: #f7f1e8;
     --color-ink: #1a1a1a;
     --color-forest: #1f4d3a;
     --color-terracotta: #c45c26;
+    --color-saffron: #e6aa42;
+    --color-mint: #d9eadf;
+    --color-sky: #dce9e7;
+}
+
+@layer base {
+    body {
+        background-color: #f7f1e8;
+        background-image:
+            linear-gradient(
+                135deg,
+                rgba(31, 77, 58, 0.04) 25%,
+                transparent 25%
+            ),
+            linear-gradient(
+                315deg,
+                rgba(196, 92, 38, 0.035) 25%,
+                transparent 25%
+            );
+        background-position:
+            0 0,
+            18px 18px;
+        background-size: 36px 36px;
+    }
+
+    button,
+    a {
+        transition:
+            transform 180ms ease,
+            box-shadow 180ms ease,
+            background-color 180ms ease,
+            border-color 180ms ease;
+    }
+}
+
+@layer components {
+    .display-title {
+        font-family: var(--font-display);
+        letter-spacing: -0.02em;
+    }
+
+    .app-panel {
+        border: 1px solid rgba(26, 26, 26, 0.1);
+        border-radius: 1.25rem;
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: 0 18px 45px rgba(31, 77, 58, 0.08);
+        backdrop-filter: blur(12px);
+    }
+
+    .lift-on-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(31, 77, 58, 0.12);
+    }
+
+    .page-reveal {
+        animation: page-reveal 520ms ease both;
+    }
+}
+
+@keyframes page-reveal {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
