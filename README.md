@@ -11,7 +11,7 @@ Additional tracks: *Transparency & Accountability* / *Safety, Reporting & Protec
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 
 - [The problem](#-the-problem)
 - [What Jokalante does](#-what-jokalante-does)
@@ -31,7 +31,7 @@ Additional tracks: *Transparency & Accountability* / *Safety, Reporting & Protec
 
 ---
 
-## 🎯 The problem
+## The problem
 
 In many African contexts, young people have growing access to the Internet, but an abundance of information does not necessarily mean better access to opportunities. Information about training, skills, programmes and opportunities is scattered, difficult to compare, difficult to verify or already outdated.
 
@@ -39,7 +39,7 @@ In many African contexts, young people have growing access to the Internet, but 
 
 The problem is therefore not a lack of information, but **a lack of reliable, contextualized and actionable information**.
 
-## 💡 What Jokalante does
+## What Jokalante does
 
 Jokalante helps users move **from scattered information to an informed decision, and then to concrete action**, by answering five questions:
 
@@ -51,7 +51,7 @@ Jokalante helps users move **from scattered information to an informed decision,
 
 Jokalante is **neither a chatbot, nor a search engine, nor a learning platform**. It is a trust platform that uses AI to transform verified information into personalized journeys and concrete actions.
 
-## 👥 Target audience
+## Target audience
 
 | Persona | Profile | Need |
 |---|---|---|
@@ -59,7 +59,7 @@ Jokalante is **neither a chatbot, nor a search engine, nor a learning platform**
 | **Aïda** (secondary) | 19, student with limited access to educational support | Learn a skill in a simple way, at her own level |
 | **Fatou** (tertiary) | Trainer / local stakeholder | Share reliable information and help keep the local ecosystem up to date |
 
-## 🔁 Functional principle
+## Functional principle
 
 The user journey is based on eight steps:
 
@@ -79,7 +79,7 @@ and not:
 AI → Assumed-to-be-true information
 ```
 
-## 🛠 Technology stack
+##  Technology stack
 
 | Component | Technology |
 |---|---|
@@ -91,7 +91,7 @@ AI → Assumed-to-be-true information
 
 AI is called through a Laravel abstraction (`AIServiceInterface`) so that the provider can be changed without modifying the business journey. The Groq API key is stored server-side and is never exposed to the browser.
 
-## 🏗 Application architecture
+##  Application architecture
 
 ```
 app/
@@ -149,9 +149,9 @@ interface AIServiceInterface
 | `saved_opportunities` | Opportunities saved by a profile |
 | `reports` | Reports submitted about an opportunity |
 
-⚠️ The `confidence` / `trust_score` fields must never be interpreted on their own: the response must always retain the criteria and references that justify them.
+The `confidence` / `trust_score` fields must never be interpreted on their own: the response must always retain the criteria and references that justify them.
 
-## 🤖 Role and safeguards of AI
+##  Role and safeguards of AI
 
 AI (Groq) addresses six specific problems:
 
@@ -180,7 +180,7 @@ Each piece of information displays its status:
 
 An **explainable Trust Score** may be displayed as a summary, but it must always be accompanied by the criteria that produced it (identifiable source, publication date, recent verification, complete information, stated deadline and absence of recent reports) — never presented as a guarantee.
 
-## ✨ MVP features
+##  MVP features
 
 - **F01** — Language selection (French / Wolof)
 - **F02** — Quick diagnosis (< 2 min, no account, no sensitive data, 14 regions of Senegal)
@@ -201,7 +201,7 @@ An **explainable Trust Score** may be displayed as a summary, but it must always
 - **F17** — Opportunity connection (view, save, contact and report)
 - **F18** — Partner spaces *(post-hackathon evolution)*
 
-## 🚧 Hackathon scope (48 hours)
+##  Scope
 
 **Pilot area:** Dakar and its surrounding area, or a more restricted zone.
 
