@@ -217,7 +217,7 @@ Information that has not been genuinely verified is clearly labelled as **“Dem
 
 **Outside the MVP scope:** a complete LMS, Jokalante certification, marketplace, payments, social network, automated recruitment, complete CV builder, mass scraping, full USSD service, nationwide coverage, extensive multilingual support, a complex administrative system and a complete partner space.
 
-## ⚙️ Installation
+## Installation
 
 ```bash
 # Clone the project
@@ -240,14 +240,11 @@ touch database/database.sqlite
 # Run migrations and seeders (demonstration catalogue)
 php artisan migrate --seed
 
-# Build the assets
-npm run dev
-
-# Start the server
-php artisan serve
+# Start the server and build assets
+composer run dev
 ```
 
-## 🔐 Configuration
+## Configuration
 
 In the `.env` file:
 
@@ -261,7 +258,7 @@ GROQ_MODEL=groq/compound
 
 The Groq key is never exposed on the client side: all calls go through `GroqAIService` on the server side.
 
-## 📊 Success indicators
+## Success indicators
 
 | KPI | Target |
 |---|---|
@@ -273,7 +270,7 @@ The Groq key is never exposed on the client side: all calls go through `GroqAISe
 | AI transparency | The data, sources and limitations of the Groq response are identifiable |
 | Taking action | The next action can be found again from the dashboard |
 
-## ⚠️ Project limitations
+## Project limitations
 
 Jokalante **does not guarantee**:
 
@@ -284,7 +281,7 @@ Jokalante **does not guarantee**:
 
 Jokalante provides **contextualized and traceable information intended to help users make a decision**.
 
-## 🗺 Roadmap
+## Roadmap
 
 - **Phase 2 — Accessibility**: SMS, USSD, offline PWA and additional local languages
 - **Phase 3 — Ecosystem**: training centres, NGOs, associations, companies and public institutions
